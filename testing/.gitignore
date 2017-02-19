@@ -3,3 +3,4 @@ vendor
 phinx.yml
 cache
 .env
+coverage
