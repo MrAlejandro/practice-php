@@ -2,79 +2,114 @@
 
 namespace Acme\Tests;
 
-use Acme\Http\Response;
-use Acme\Http\Request;
+// use Acme\Http\Response;
+// use Acme\Http\Request;
 use Acme\Validation\Validator;
 use PHPUnit\Framework\TestCase;
+use Kunststube\CSRFP\SignatureGenerator;
+use Dotenv;
 
 class ValidatorTest extends TestCase
 {
     protected $request;
     protected $response;
     protected $validator;
-    protected $testdata;
 
-    protected function setUpRequestResponse()
+    protected function setUp()
     {
-        if ($this->testdata === null) {
-            $this->testdata = [];
-        }
+        $signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
+            ->setConstructorArgs(['fdhasflas'])
+            ->getMock();
 
-        $this->request = new Request($this->testdata);
-        $this->response = new Response($this->request);
-        $this->validator = new Validator($this->request, $this->response);
+        $this->request = $this->getMockBuilder('Acme\Http\Request')
+            ->getMock();
+
+        $this->response = $this->getMockBuilder('Acme\Http\Response')
+            ->setConstructorArgs([$this->request, $signer])
+            ->getMock();
     }
 
     public function testGetIsValidReturnsTrue()
     {
-        $this->setupRequestResponse();
-        $this->validator->setIsValid(true);
-        $this->assertTrue($this->validator->getIsValid());
+        $validator = new Validator($this->request, $this->response);
+        $validator->setIsValid(true);
+        $this->assertTrue($validator->getIsValid());
     }
 
     public function testGetIsValidReturnsFalse()
     {
-        $this->setupRequestResponse();
-        $this->validator->setIsValid(false);
-        $this->assertFalse($this->validator->getIsValid());
+        $validator = new Validator($this->request, $this->response);
+        $validator->setIsValid(false);
+        $this->assertFalse($validator->getIsValid());
     }
 
     public function testCheckForMinStringLengthWithValidData()
     {
-        $this->testdata = ['mintype' => 'yellow'];
-        $this->setupRequestResponse();
-        $errors = $this->validator->check(['mintype' => 'min:3']);
+        $request = $this->getMockBuilder('Acme\Http\Request')
+            ->getMock();
+
+        $request->expects($this->once())
+            ->method('input')
+            ->will($this->returnValue('yellow'));
+
+        $validator = new Validator($request, $this->response);
+        $errors = $validator->check(['mintype' => 'min:3']);
         $this->assertCount(0, $errors);
     }
 
     public function testCheckForMinStringLengthWithInvalidData()
     {
-        $this->testdata = ['mintype' => 'x'];
-        $this->setupRequestResponse();
-        $errors = $this->validator->check(['mintype' => 'min:3']);
+        $request = $this->getMockBuilder('Acme\Http\Request')
+            ->getMock();
+
+        $request->expects($this->once())
+            ->method('input')
+            ->will($this->returnValue('x'));
+
+        $validator = new Validator($request, $this->response);
+        $errors = $validator->check(['mintype' => 'min:3']);
         $this->assertCount(1, $errors);
     }
 
     public function testCheckForEmailForValidData()
     {
-        $this->testdata = ['emailtype' => 'alex@test.com'];
-        $this->setupRequestResponse();
-        $errors = $this->validator->check(['emailtype' => 'email']);
+        $request = $this->getMockBuilder('Acme\Http\Request')
+            ->getMock();
+
+        $request->expects($this->once())
+            ->method('input')
+            ->will($this->returnValue('alex@test.com'));
+
+        $validator = new Validator($request, $this->response);
+        $errors = $validator->check(['emailtype' => 'email']);
         $this->assertCount(0, $errors);
     }
 
     public function testCheckForEmailForInvalidData()
     {
-        $this->testdata = ['emailtype' => 'notavalidemail'];
-        $this->setupRequestResponse();
-        $errors = $this->validator->check(['emailtype' => 'email']);
+        $request = $this->getMockBuilder('Acme\Http\Request')
+            ->getMock();
+
+        $request->expects($this->once())
+            ->method('input')
+            ->will($this->returnValue('notavalidemail'));
+
+        $validator = new Validator($request, $this->response);
+        $errors = $validator->check(['emailtype' => 'email']);
         $this->assertCount(1, $errors);
     }
+
+    /* public function testValidateWithValidData() */
+    /* { */
+    /*     $this->testdata = ['check_field' => 'alex@test.com']; */
+    /*     $this->setupRequestResponse(); */
+    /*     $this->assertTrue($this->validator->validate(['check_field' => 'email'], '/register')); */
+    /* } */
 
     /* public function testValidateWithInvalidData() */
     /* { */
     /*     $this->testdata = ['check_field' => 'x']; */
     /*     $this->setupRequestResponse(); */
-    /*     $this->validator->validate(['check_field' => 'email'], '/register'); */
+    /*     $this->assertFalse($this->validator->validate(['check_field' => 'email'], '/register')); */
     /* } */
 }
