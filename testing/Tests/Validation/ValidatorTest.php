@@ -175,12 +175,30 @@ class ValidatorTest extends TestCase
 
     public function testValidateWithValidData()
     {
+        $validator = $this->getMockBuilder('Acme\Validation\Validator')
+            ->setConstructorArgs([$this->request, $this->response, $this->session])
+            ->setMethods(['check']) // is stub and can be overridden
+            ->getMock();
+
+        $isValid = $validator->validate(['foo' => 'min:3'], '/register');
+        $this->assertTrue($isValid);
     }
 
-    /* public function testValidateWithInvalidData() */
-    /* { */
-    /*     $this->testdata = ['check_field' => 'x']; */
-    /*     $this->setupRequestResponse(); */
-    /*     $this->assertFalse($this->validator->validate(['check_field' => 'email'], '/register')); */
-    /* } */
+    public function testValidateWithInvalidData()
+    {
+        $validator = $this->getMockBuilder('Acme\Validation\Validator')
+            ->setConstructorArgs([$this->request, $this->response, $this->session])
+            ->setMethods(['check', 'redirectToPage']) // are stubs and can be overridden
+            ->getMock();
+
+        $validator->expects($this->once())
+            ->method('check')
+            ->will($this->returnValue(['some error']));
+
+        $validator->expects($this->once())
+            ->method('redirectToPage'); // "smoke test" we do not want to call the method for now
+
+        $isValid = $validator->validate(['foo' => 'min:1'], '/register');
+        /* $this->assertFalse($isValid); */ // smoke test, not best practice but have no other options for this method
+    }
 }

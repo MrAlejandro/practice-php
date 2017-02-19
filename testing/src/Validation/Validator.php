@@ -33,7 +33,6 @@ class Validator {
      */
     public function check($validation_data)
     {
-
         $errors = [];
 
         foreach ($validation_data as $name => $value) {
@@ -92,11 +91,7 @@ class Validator {
         $errors = $this->check($rules);
 
         if (sizeof($errors) > 0) {
-            $this->session->put('_error', $errors);
-            $this->isValid = false;
-            $this->response->withInput();
-            $this->response->withView($url)->render();
-            exit;
+            $this->redirectToPage($url, $errors);
         } else {
             $this->isValid = true;
 
@@ -126,4 +121,12 @@ class Validator {
         return $table::where($name, '=', $this->request->input($name))->get();
     }
 
+    public function redirectToPage($url, $errors)
+    {
+        $this->session->put('_error', $errors);
+        $this->isValid = false;
+        $this->response->withInput();
+        $this->response->withView($url)->render();
+        exit;
+    }
 }
