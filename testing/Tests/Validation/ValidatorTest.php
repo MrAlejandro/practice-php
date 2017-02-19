@@ -70,4 +70,11 @@ class ValidatorTest extends TestCase
         $errors = $this->validator->check(['emailtype' => 'email']);
         $this->assertCount(1, $errors);
     }
+
+    /* public function testValidateWithInvalidData() */
+    /* { */
+    /*     $this->testdata = ['check_field' => 'x']; */
+    /*     $this->setupRequestResponse(); */
+    /*     $this->validator->validate(['check_field' => 'email'], '/register'); */
+    /* } */
 }
