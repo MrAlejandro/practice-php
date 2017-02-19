@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Test;
+namespace Acme\Tests;
 
 use PHPUnit\Framework\TestCase;
 
