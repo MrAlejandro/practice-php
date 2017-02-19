@@ -1,2 +1,5 @@
 .vagrant
-
+vendor
+phinx.yml
+cache
+.env
