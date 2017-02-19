@@ -147,18 +147,35 @@ class ValidatorTest extends TestCase
 
     public function testCheckForUniqueWithValidData()
     {
+        $validator = $this->getMockBuilder('Acme\Validation\Validator')
+            ->setConstructorArgs([$this->request, $this->response, $this->session])
+            ->setMethods(['getRows']) // is stub and can be overridden
+            ->getMock();
+
+        $validator->method('getRows')
+            ->willReturn([]);
+
+        $errors = $validator->check(['my_field' => 'unique:User']);
+        $this->assertCount(0, $errors);
     }
 
     public function testCheckForUniqueWithInvalidData()
     {
+        $validator = $this->getMockBuilder('Acme\Validation\Validator')
+            ->setConstructorArgs([$this->request, $this->response, $this->session])
+            ->setMethods(['getRows']) // is stub and can be overridden
+            ->getMock();
+
+        $validator->method('getRows')
+            ->willReturn(['a']);
+
+        $errors = $validator->check(['my_field' => 'unique:User']);
+        $this->assertCount(1, $errors);
     }
 
-    /* public function testValidateWithValidData() */
-    /* { */
-    /*     $this->testdata = ['check_field' => 'alex@test.com']; */
-    /*     $this->setupRequestResponse(); */
-    /*     $this->assertTrue($this->validator->validate(['check_field' => 'email'], '/register')); */
-    /* } */
+    public function testValidateWithValidData()
+    {
+    }
 
     /* public function testValidateWithInvalidData() */
     /* { */
