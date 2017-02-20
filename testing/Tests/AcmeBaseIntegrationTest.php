@@ -43,7 +43,6 @@ abstract class AcmeBaseIntegrationTest extends TestCase
         $capsule->bootEloquent();
     }
 
-
     public function getDataSet()
     {
         return $this->createMySQLXMLDataSet(__DIR__ . "/acme_db.xml");

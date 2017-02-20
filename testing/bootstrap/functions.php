@@ -3,7 +3,7 @@
 // define custom functions
 
 if (!function_exists('startsWith')) {
-    function startWith($haystack, $needle)
+    function startsWith($haystack, $needle)
     {
         return $haystack === "" || strpos($haystack, $needle, - strlen($haystack)) !== false;
     }
