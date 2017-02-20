@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Tests;
+namespace Acme\Tests\Validation;
 
 // use Acme\Http\Response;
 // use Acme\Http\Request;
@@ -19,6 +19,7 @@ class ValidatorTest extends TestCase
 
     protected function setUp()
     {
+        include_once(__DIR__ . '/../../bootstrap/functions.php');
         $signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
             ->setConstructorArgs(['fdhasflas'])
             ->getMock();
@@ -75,7 +76,8 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($request, $this->response);
         $errors = $validator->check(['mintype' => 'min:3']);
-        $this->assertCount(1, $errors);
+        /* $this->assertCount(1, $errors); */
+        $this->assertTrue(stringContaints($errors[0], 'must be at least'));
     }
 
     public function testCheckForEmailForValidData()
@@ -94,6 +96,7 @@ class ValidatorTest extends TestCase
         $validator = new Validator($request, $this->response);
         $errors = $validator->check(['emailtype' => 'email']);
         $this->assertCount(1, $errors);
+        $this->assertTrue(stringContaints($errors[0], 'must be a valid email'));
     }
 
     public function testCheckForEqualToWithValidData()
@@ -142,7 +145,9 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($request, $this->response, $this->session);
         $errors = $validator->check(['my_field' => 'equalTo:another_field']);
-        $this->assertCount(1, $errors);
+        /* $this->assertCount(1, $errors); */
+        $this->assertEquals($errors[0], 'Value does not match verification value!');
+        $this->assertStringStartsWith($errors[0], 'Value does not match verification value!');
     }
 
     public function testCheckForUniqueWithValidData()
@@ -170,7 +175,9 @@ class ValidatorTest extends TestCase
             ->willReturn(['a']);
 
         $errors = $validator->check(['my_field' => 'unique:User']);
-        $this->assertCount(1, $errors);
+        /* $this->assertCount(1, $errors); */
+        $this->assertTrue(stringContaints($errors[0], 'already exists in this system!'));
+
     }
 
     public function testValidateWithValidData()
