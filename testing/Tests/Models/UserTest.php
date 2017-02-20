@@ -2,7 +2,7 @@
 
 namespace Acme\Tests;
 
-use Acme\Models;
+use Acme\Models\User;
 
 class UserTest extends AcmeBaseIntegrationTest
 {
@@ -13,6 +13,7 @@ class UserTest extends AcmeBaseIntegrationTest
         $testimonials = $user->testimonials();
 
         $actual = get_class($testimonials);
+
         $expected = "Illuminate\\Database\\Eloquent\\Relations\\HasMany";
         $this->assertEquals($actual, $expected);
     }
