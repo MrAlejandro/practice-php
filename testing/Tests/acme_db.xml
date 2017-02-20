@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<database name="acme_test">
+	<table_data name="pages">
+	<row>
+		<field name="id">1</field>
+		<field name="browser_title">About Acme</field>
+		<field name="page_content">&lt;h1&gt;About Acme&lt;/h1&gt;&lt;p&gt;All about this company.&lt;/p&gt;</field>
+		<field name="slug">about-acme</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	<row>
+		<field name="id">2</field>
+		<field name="browser_title">Success</field>
+		<field name="page_content">&lt;h1&gt;Success&lt;/h1&gt;&lt;p&gt;Welcome to Acme!&lt;/p&gt;</field>
+		<field name="slug">success</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	<row>
+		<field name="id">3</field>
+		<field name="browser_title">Not Found</field>
+		<field name="page_content">&lt;h1&gt;Page Not Found!&lt;/h1&gt;&lt;p&gt;Page not found!&lt;/p&gt;</field>
+		<field name="slug">page-not-found</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	<row>
+		<field name="id">4</field>
+		<field name="browser_title">Account Activated</field>
+		<field name="page_content">&lt;h1&gt;Acount Now Active&lt;/h1&gt;&lt;p&gt;Your account is now active, and you can log in.&lt;/p&gt;</field>
+		<field name="slug">account-activated</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	<row>
+		<field name="id">5</field>
+		<field name="browser_title">Saved</field>
+		<field name="page_content">&lt;h1&gt;Testimonial Saved&lt;/h1&gt;&lt;p&gt;Your testimonial has been saved.&lt;/p&gt;</field>
+		<field name="slug">testimonial-saved</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	</table_data>
+	<table_data name="phinxlog">
+	<row>
+		<field name="version">20150821154342</field>
+		<field name="migration_name">CreateUserTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150821165358</field>
+		<field name="migration_name">CreatePagesTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150821165608</field>
+		<field name="migration_name">CreateTestimonialsTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150822165648</field>
+		<field name="migration_name">SeedUsersTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150822170817</field>
+		<field name="migration_name">SeedTestimonialTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150822170828</field>
+		<field name="migration_name">SeedPagesTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	<row>
+		<field name="version">20150825143510</field>
+		<field name="migration_name">CreateUsersPendingTable</field>
+		<field name="start_time">2017-02-20 18:23:58</field>
+		<field name="end_time">2017-02-20 18:23:58</field>
+		<field name="breakpoint">0</field>
+	</row>
+	</table_data>
+	<table_data name="testimonials">
+	<row>
+		<field name="id">1</field>
+		<field name="title">Testimonial Title</field>
+		<field name="testimonial">Testimonial text</field>
+		<field name="user_id">1</field>
+		<field name="created_at">2015-08-26 19:15:43</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	</table_data>
+	<table_data name="users">
+	<row>
+		<field name="id">1</field>
+		<field name="first_name">Trevor</field>
+		<field name="last_name">Sawler</field>
+		<field name="email">me@here.ca</field>
+		<field name="password">$2y$10$9KQ2jg4zdf1u0SeuRjs/o.PAGDjZQfW3lFsamTmVpw2i8Ij1TGnt6</field>
+		<field name="active">1</field>
+		<field name="access_level">2</field>
+		<field name="created_at">2017-02-20 18:23:58</field>
+		<field name="updated_at" xsi:nil="true" />
+	</row>
+	</table_data>
+	<table_data name="users_pending">
+	</table_data>
+</database>
+</mysqldump>

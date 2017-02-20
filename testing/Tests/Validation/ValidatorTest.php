@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Tests\Validation;
+namespace Acme\Tests;
 
 // use Acme\Http\Response;
 // use Acme\Http\Request;
