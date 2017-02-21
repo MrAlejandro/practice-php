@@ -121,12 +121,11 @@ class Validator {
         return $table::where($name, '=', $this->request->input($name))->get();
     }
 
-    public function redirectToPage($url, $errors)
+    protected function redirectToPage($url, $errors)
     {
         $this->session->put('_error', $errors);
         $this->isValid = false;
         $this->response->withInput();
         $this->response->withView($url)->render();
-        exit;
     }
 }

@@ -18,11 +18,11 @@ abstract class AcmeBaseIntegrationTest extends TestCase
     public $dbAdapter;
     public $bootstrap;
     public $conn;
-    public $session;
 
     protected $request;
     protected $response;
     protected $blade;
+    protected $session;
 
     public function setUp()
     {
@@ -79,4 +79,20 @@ abstract class AcmeBaseIntegrationTest extends TestCase
 
         return $this->createDefaultDBConnection($db, "acme_test");
     }
+
+    /**
+     * Use reflection to allow us to run protected methods
+     *
+     * @param $obj
+     * @param $method
+     * @param array $args
+     * @return mixed
+     */
+    public function runProtectedMethod($obj, $method, $args = array()) {
+        $method = new \ReflectionMethod(get_class($obj), $method);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($obj, $args);
+    }
+
 }

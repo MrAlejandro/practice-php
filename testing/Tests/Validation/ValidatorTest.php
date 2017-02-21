@@ -9,18 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Kunststube\CSRFP\SignatureGenerator;
 use Dotenv;
 
-class ValidatorTest extends TestCase
+class ValidatorTest extends AcmeBaseIntegrationTest
 {
     protected $request;
     protected $response;
     protected $session;
     protected $blade;
+    protected $signer;
     protected $validator;
 
-    protected function setUp()
+    public function setUp()
     {
         include_once(__DIR__ . '/../../bootstrap/functions.php');
-        $signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
+        $this->signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
             ->setConstructorArgs(['fdhasflas'])
             ->getMock();
 
@@ -31,7 +32,7 @@ class ValidatorTest extends TestCase
             ->getMock();
 
         $this->response = $this->getMockBuilder('Acme\Http\Response')
-            ->setConstructorArgs([$this->request, $signer, $this->blade, $this->session])
+            ->setConstructorArgs([$this->request, $this->signer, $this->blade, $this->session])
             ->getMock();
     }
 
@@ -208,4 +209,26 @@ class ValidatorTest extends TestCase
         $isValid = $validator->validate(['foo' => 'min:1'], '/register');
         /* $this->assertFalse($isValid); */ // smoke test, not best practice but have no other options for this method
     }
+
+    public function testRedirectToPage()
+    {
+        // in order to run a unit test on this method and allow for an assertion,
+        // we'll mock the response class and override redirectToPage to return a true
+        $res = $this->getMockBuilder('Acme\Http\Response')
+            ->setConstructorArgs([$this->request, $this->signer, $this->blade, $this->session])
+            ->setMethods([ 'render'])
+            ->getMock();
+
+        $res->expects($this->once())
+            ->method('render')
+            ->will($this->returnValue([true]));
+
+        $validator = new Validator($this->request, $res, $this->session);
+        // cannot be tested because redirectToPage is protecte
+        /* $result = $validator->redirectToPage('/redirectToPage', []); */
+        $result = $this->runProtectedMethod($validator, 'redirectToPage', ['/whatever', [] ]);
+
+        $this->assertNull($result);
+    }
+
 }
