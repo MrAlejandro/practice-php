@@ -69,4 +69,64 @@ class PageControllerIntegrationTest extends AcmeBaseIntegrationTest
         $this->assertEquals($expected, $actual);
     }
 
+    public function testGetShowPageWithInvalidData()
+    {
+        // create a mock of Response and make render method a stub
+        $resp = $this->getMockBuilder('Acme\Http\Response')
+            ->setConstructorArgs([$this->request, $this->signer,
+                $this->blade, $this->session])
+            ->setMethods(['render'])
+            ->getMock();
+
+        // override render method to return true
+        $resp->method('render')
+            ->willReturn(true);
+
+        // mock the controller and make getUri a stub
+        $controller = $this->getMockBuilder('Acme\Controllers\PageController')
+            ->setConstructorArgs([$this->request, $resp, $this->session,
+                $this->blade, $this->signer])
+            ->setMethods(['getUri', 'getShow404'])
+            ->getMock();
+
+        // orverride getUri to return just the slug from the uri
+        $controller->expects($this->once())
+            ->method('getUri')
+            ->will($this->returnValue('missing-page'));
+
+        $controller->expects($this->once())
+            ->method('getShow404')
+            ->will($this->returnValue(true));
+
+        // call the method we want to test
+        $result = $controller->getShowPage();
+        // should get true back if we called 404
+
+        $this->assertTrue($result);
+    }
+
+    public function testGetShow404()
+    {
+        $resp = $this->getMockBuilder('Acme\Http\Response')
+            ->setConstructorArgs([$this->request, $this->signer,
+                $this->blade, $this->session])
+            ->setMethods(['render'])
+            ->getMock();
+
+        $resp->method('render')
+            ->willReturn(true);
+
+        $controller = new PageController($this->request, $resp,
+            $this->session, $this->blade, $this->signer);
+
+        $controller->getShow404();
+        // should have view of page-not-found
+        $expected = "page-not-found";
+        $actual = Assert::readAttribute($resp, 'view');
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetUri()
+    {
+    }
 }

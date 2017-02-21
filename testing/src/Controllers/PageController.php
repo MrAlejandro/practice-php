@@ -44,7 +44,8 @@ class PageController extends BaseControllerWithDI {
 
         if (!isset($browser_title)) {
             $this->getShow404();
-            exit();
+            /* exit(); */
+            return true;
         }
 
         return $this->response
