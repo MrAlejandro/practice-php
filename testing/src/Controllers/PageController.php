@@ -9,6 +9,8 @@ use Acme\Models\Page;
  */
 class PageController extends BaseControllerWithDI {
 
+    public $page;
+
     /**
      * Show the home page
      * @return html
@@ -28,17 +30,16 @@ class PageController extends BaseControllerWithDI {
     public function getShowPage()
     {
         // extract page name from the url
-        $uri = explode("/", $this->request->server['REQUEST_URI']);
-        $target = $uri[1];
+        $target = $this->getUri();
 
         // find matching page in the db
-        $page = Page::where('slug', '=', $target)->first();
+        $this->page = Page::where('slug', '=', $target)->first();
 
         // look up page content
-        if ($page) {
-            $browser_title = $page->browser_title;
-            $page_content = $page->page_content;
-            $page_id = $page->id;
+        if ($this->page) {
+            $browser_title = $this->page->browser_title;
+            $page_content = $this->page->page_content;
+            $page_id = $this->page->id;
         }
 
         if (!isset($browser_title)) {
@@ -74,6 +75,12 @@ class PageController extends BaseControllerWithDI {
         $slug = strtolower(trim($slug));
         $slug = preg_replace("/[\/_|+ -]+/", $separator, $slug);
         return $slug;
+    }
+
+    protected function getUri()
+    {
+        $uri = explode("/", $this->request->server['REQUEST_URI']);
+        return isset($uri[1]) ? $uri[1] : '';
     }
 
 }
