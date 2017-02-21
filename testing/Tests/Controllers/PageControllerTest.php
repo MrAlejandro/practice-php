@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\Tests\Controllesr;
+namespace Acme\Tests;
 
 use PHPUnit\Framework\TestCase;
 

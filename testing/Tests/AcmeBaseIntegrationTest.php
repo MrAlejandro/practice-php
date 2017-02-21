@@ -23,6 +23,7 @@ abstract class AcmeBaseIntegrationTest extends TestCase
     protected $response;
     protected $blade;
     protected $session;
+    protected $signer;
 
     public function setUp()
     {
@@ -46,7 +47,7 @@ abstract class AcmeBaseIntegrationTest extends TestCase
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
 
-        $signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
+        $this->signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
             ->setConstructorArgs(['fdhasflas'])
             ->getMock();
 
@@ -61,7 +62,7 @@ abstract class AcmeBaseIntegrationTest extends TestCase
             ->getMock();
 
         $this->response = $this->getMockBuilder('Acme\Http\Response')
-            ->setConstructorArgs([$this->request, $signer, $this->blade, $this->session])
+            ->setConstructorArgs([$this->request, $this->signer, $this->blade, $this->session])
             ->getMock();
     }
 
@@ -69,7 +70,6 @@ abstract class AcmeBaseIntegrationTest extends TestCase
     {
         return $this->createMySQLXMLDataSet(__DIR__ . "/acme_db.xml");
     }
-
 
     public function getConnection()
     {
