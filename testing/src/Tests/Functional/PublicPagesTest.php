@@ -2,8 +2,12 @@
 
 namespace Acme\Tests;
 
+use Goutte\Client;
+
 class PublicPagesTest extends AcmeBaseIntegrationTest
 {
+    use CrawlTrait;
+
     /**
      * @dataProvider provideUrls
      */
@@ -23,14 +27,6 @@ class PublicPagesTest extends AcmeBaseIntegrationTest
     {
         $responseCode = $this->crawl('http://localhost/login');
         $this->assertEquals(200, $responseCode);
-    }
-
-    public function crawl($url)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($ch);
-        return curl_getinfo($ch, CURLINFO_HTTP_CODE);
     }
 
     public function provideUrls()
