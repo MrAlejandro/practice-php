@@ -20,7 +20,7 @@ class ValidatorTest extends AcmeBaseIntegrationTest
 
     public function setUp()
     {
-        include_once(__DIR__ . '/../../bootstrap/functions.php');
+        include_once(__DIR__ . '/../../../bootstrap/functions.php');
         $this->signer = $this->getMockBuilder('Kunststube\CSRFP\SignatureGenerator')
             ->setConstructorArgs(['fdhasflas'])
             ->getMock();

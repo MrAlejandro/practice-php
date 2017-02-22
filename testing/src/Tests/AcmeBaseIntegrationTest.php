@@ -27,9 +27,9 @@ abstract class AcmeBaseIntegrationTest extends TestCase
 
     public function setUp()
     {
-        require __DIR__ . '/../vendor/autoload.php';
-        require __DIR__ . '/../bootstrap/functions.php';
-        Dotenv::load(__DIR__ . '/../');
+        require __DIR__ . '/../../vendor/autoload.php';
+        require __DIR__ . '/../../bootstrap/functions.php';
+        Dotenv::load(__DIR__ . '/../../');
 
         $capsule = new Capsule();
 
