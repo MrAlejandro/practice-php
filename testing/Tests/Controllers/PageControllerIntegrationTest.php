@@ -14,6 +14,13 @@ class PageControllerIntegrationTest extends AcmeBaseIntegrationTest
     protected $signer;
     protected $blade;
 
+
+    public function setUp()
+    {
+        $_SERVER['REQUEST_URI'] = "/about-acme";
+        parent::setUp();
+    }
+
     public function testGetShowHomePage()
     {
         $response = $this->getMockBuilder('Acme\Http\Response')
@@ -128,5 +135,40 @@ class PageControllerIntegrationTest extends AcmeBaseIntegrationTest
 
     public function testGetUri()
     {
+        // create a mock of Response and make render method a stub
+        $resp = $this->getMockBuilder('Acme\Http\Response')
+            ->setConstructorArgs([$this->request, $this->signer, $this->blade, $this->session])
+            ->setMethods(['render'])
+            ->getMock();
+
+        // override render method to return true
+        $resp->method('render')
+            ->willReturn(true);
+
+        $controller = $this->getMockBuilder('Acme\Controllers\PageController')
+            ->setConstructorArgs([$this->request, $resp, $this->session,
+                $this->blade, $this->signer])
+            ->setMethods(null)
+            ->getMock();
+
+        // call the method we want to test
+        $controller->getShowPage();
+
+        // we expect to get the $page object with browser_title set to "About Acme"
+        $expected = "About Acme";
+        $actual = $controller->page->browser_title;
+
+        // run assesrtion for browser title/page title
+        $this->assertEquals($expected, $actual);
+
+        // should have view of generic-page
+        $expected = "generic-page";
+        $actual = Assert::readAttribute($resp, 'view');
+        $this->assertEquals($expected, $actual);
+
+        // should have page_id of 1
+        $expected = 1;
+        $actual = $controller->page->id;
+        $this->assertEquals($expected, $actual);
     }
 }
